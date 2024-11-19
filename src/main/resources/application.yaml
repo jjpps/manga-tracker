@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:oracle:thin:@//localhost:1521/MANGATRACKER
+    username: MANGATRACKER
+    password: MANGATRACKER
+    driver-class-name: oracle.jdbc.OracleDriver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+#docker container create -it --name oracle-local -p 1521:1521 -e ORACLE_PWD=welcome123 container-registry.oracle.com/database/express:latest
+mangadex:
+  url:
