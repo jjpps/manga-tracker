@@ -6,8 +6,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Entity
-public class Manga {
+@Entity(name = "Manga")
+public class MangaModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -15,18 +15,18 @@ public class Manga {
     @Column(nullable = false)
     private String titulo;
 
-    @Column(nullable = false, unique = true)
-    private String url;
+    @Column(nullable = false, unique = true,name = "url")
+    private String uuid;
 
     @Column(nullable = false)
-    private Integer quantidadeCapitulos;
+    private Long quantidadeCapitulos;
 
     @Column(nullable = false)
-    private Integer numeroUltimoCapitulo;
+    private Long numeroUltimoCapitulo;
 
     @Column(nullable = false)
     private String nomeUltimoCapitulo;
 
     @Column(nullable = false)
-    private Integer capLido;
+    private Long capLido;
 }

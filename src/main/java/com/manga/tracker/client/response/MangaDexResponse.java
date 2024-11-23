@@ -1,10 +1,11 @@
 package com.manga.tracker.client.response;
 
-import com.manga.tracker.model.Manga;
+import lombok.Getter;
 
-public class MangaResponse {
+@Getter
+public class MangaDexResponse<T> {
     public String result;
     public String response;
-    public Manga data;
+    public T data;
 
 }
