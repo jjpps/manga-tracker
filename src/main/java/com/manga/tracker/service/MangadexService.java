@@ -5,31 +5,23 @@ import com.manga.tracker.client.response.MangaAttributes;
 import com.manga.tracker.client.response.MangaDexData;
 import com.manga.tracker.client.response.MangaDexResponse;
 import com.manga.tracker.dto.MangaDto;
-import com.manga.tracker.model.MangaModel;
-import com.manga.tracker.repository.MangaRepository;
-import org.springframework.http.HttpStatus;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
+@RequiredArgsConstructor
 public class MangadexService {
+    private final MangadexClient mangadexClient;
+    public MangaDto getManga(String url) {
 
-    private MangadexClient mangadexClient;
-    private MangaRepository mangaRepository;
-
-    public MangaDto getManga(Long id) {
-        MangaModel mangaModel = mangaRepository.findById(id).orElse(null);
-        if (mangaModel != null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Manga not found in DataBase");
-        }
-        MangaDexResponse<MangaDexData<MangaAttributes>> mangaDexResponse = mangadexClient.getManga(mangaModel.getUuid());
+        MangaDexResponse<MangaDexData<MangaAttributes>> mangaDexResponse = this.mangadexClient.getManga(url.split("/")[4]);
         return MangaDto.builder()
-                .id(mangaModel.getId())
-                .capLido(mangaModel.getCapLido())
-                .nomeUltimoCapitulo(mangaDexResponse.getData().getAttributes().getLastChapter())
-                //.numeroUltimoCapitulo(mangaResponse.getData().getAttributes().getLastVolume())
+                .id(0L)
+                .capLido(0L)
+                //.nomeUltimoCapitulo(mangaDexResponse.getData().getAttributes().getLastChapter())
+                .numeroUltimoCapitulo(mangaDexResponse.getData().getAttributes().getLastVolume().isEmpty()?0L:Long.parseLong(mangaDexResponse.getData().getAttributes().getLastVolume()))
                 .quantidadeCapitulos(mangaDexResponse.getData().getAttributes().getLastChapter())
-                .titulo(mangaDexResponse.getData().getAttributes().getTitle())
+                .titulo(mangaDexResponse.getData().getAttributes().getTitle().get("en"))
                 .build();
     }
 
