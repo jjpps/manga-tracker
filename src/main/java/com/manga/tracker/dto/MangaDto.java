@@ -11,7 +11,7 @@ public class MangaDto {
     public Long id;
     public String titulo;
     private String quantidadeCapitulos;
-    private Long numeroUltimoCapitulo;
+    private String numeroUltimoCapitulo;
     private String nomeUltimoCapitulo;
     private Long capLido;
 }
