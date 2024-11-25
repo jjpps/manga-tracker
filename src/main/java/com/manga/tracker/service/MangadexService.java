@@ -1,6 +1,4 @@
 package com.manga.tracker.service;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.manga.tracker.client.MangadexClient;
 import com.manga.tracker.client.response.ChapterAttributes;
 import com.manga.tracker.client.response.MangaAttributes;
@@ -8,7 +6,10 @@ import com.manga.tracker.client.response.MangaDexData;
 import com.manga.tracker.client.response.MangaDexResponse;
 import com.manga.tracker.dto.MangaDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.List;
 
 @Service
@@ -28,7 +29,7 @@ public class MangadexService {
                     .titulo(mangaAttributes.getData().getAttributes().getTitle().get("en"))
                     .build();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
     }
 
