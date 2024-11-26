@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/manga")
-
+@CrossOrigin(origins = "http://localhost:3000") // Permite somente o frontend
 public class MangaController {
     @Autowired
     public MangadexService mangadexService;

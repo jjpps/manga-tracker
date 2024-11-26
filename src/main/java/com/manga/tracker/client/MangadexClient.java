@@ -4,7 +4,6 @@ import com.manga.tracker.client.response.ChapterAttributes;
 import com.manga.tracker.client.response.MangaAttributes;
 import com.manga.tracker.client.response.MangaDexData;
 import com.manga.tracker.client.response.MangaDexResponse;
-import org.json.JSONObject;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
