@@ -1,12 +1,14 @@
 package com.manga.tracker.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@Builder
 @Entity(name = "Manga")
+@NoArgsConstructor
+@AllArgsConstructor
 public class MangaModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +24,7 @@ public class MangaModel {
     private Long quantidadeCapitulos;
 
     @Column(nullable = false)
-    private Long numeroUltimoCapitulo;
+    private String numeroUltimoCapitulo;
 
     @Column(nullable = false)
     private String nomeUltimoCapitulo;

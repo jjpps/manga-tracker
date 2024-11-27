@@ -14,4 +14,7 @@ public class MangaDto {
     private String numeroUltimoCapitulo;
     private String nomeUltimoCapitulo;
     private Long capLido;
+    private String status;
+    private String uuid;
+    private String cover;
 }
