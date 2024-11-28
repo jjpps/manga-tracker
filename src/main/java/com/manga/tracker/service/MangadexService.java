@@ -38,6 +38,24 @@ public class MangadexService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
     }
+    public MangaDto getMangaByUUID(String uuid) {
+        try{
+            MangaDexResponse<MangaDexData<MangaAttributes>> mangaAttributes = this.mangadexClient.getManga(uuid);
+            MangaDexResponse<List<MangaDexData<ChapterAttributes>>> chapterAttributes = this.mangadexClient.getChapters(mangaAttributes.getData().getId(),1, "desc");
+            return MangaDto.builder()
+                    .id(0L)
+                    .capLido(0L)
+                    .nomeUltimoCapitulo(chapterAttributes.getData().getFirst().getAttributes().getTitle())
+                    .numeroUltimoCapitulo(chapterAttributes.getData().getFirst().getAttributes().getChapter())
+                    .quantidadeCapitulos(mangaAttributes.getData().getAttributes().getLastChapter())
+                    .titulo(mangaAttributes.getData().getAttributes().getTitle().get("en"))
+                    .status(mangaAttributes.getData().getAttributes().getStatus())
+                    .uuid(mangaAttributes.getData().getId())
+                    .build();
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+    }
     public MangaDto saveManga(MangaRequest mangaRequest){
         MangaDexResponse<MangaDexData<MangaAttributes>> mangaAttributes = this.mangadexClient.getManga(mangaRequest.getId());
         MangaDexResponse<List<MangaDexData<ChapterAttributes>>> chapterAttributes = this.mangadexClient.getChapters(mangaAttributes.getData().getId(),1, "desc");

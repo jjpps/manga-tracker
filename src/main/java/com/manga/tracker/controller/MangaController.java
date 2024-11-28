@@ -25,5 +25,9 @@ public class MangaController {
     public MangaDto createManga(@RequestBody MangaRequest mangaRequest) {        return mangadexService.saveManga(mangaRequest);    }
     @GetMapping("/GetAll")
     public List<MangaModel> getAllManga() { return mangadexService.getAllMangas();}
+    @GetMapping("/")
+    public MangaDto getMangaById(@RequestParam String uuid) {
+        return mangadexService.getManga(uuid);
+    }
 
 }
