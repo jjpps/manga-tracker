@@ -17,7 +17,8 @@ public interface MangadexClient {
     @GetMapping("/manga/{id}")
     MangaDexResponse<MangaDexData<MangaAttributes>> getManga(@PathVariable("id") final String mangaId);
     @GetMapping("/chapter")
-    MangaDexResponse<List<MangaDexData<ChapterAttributes>>> getChapters(@RequestParam("manga") final String mangaId, @RequestParam("limit") final int limit, @RequestParam("order[chapter]") final String order);
+    MangaDexResponse<List<MangaDexData<ChapterAttributes>>> getChapters(@RequestParam("manga") final String mangaId, @RequestParam("limit") final int limit,
+                                                                        @RequestParam("order[chapter]") final String order, @RequestParam("translatedLanguage[]") final String translatedLanguage);
 
 
 

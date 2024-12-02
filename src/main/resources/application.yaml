@@ -7,12 +7,12 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.OracleDialect
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
         format_sql: true
-
 mangadex:
   host: https://api.mangadex.org
 #docker container create -it --name oracle-local -p 1521:1521 -e ORACLE_PWD=welcome123 container-registry.oracle.com/database/express:latest
+

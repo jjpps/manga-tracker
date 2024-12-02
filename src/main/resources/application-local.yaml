@@ -12,6 +12,10 @@ spring:
     properties:
       hibernate:
         format_sql: true
+logging:
+  level:
+    root: info
+    com.manga.tracker.service.MangadexService: debug
 
 mangadex:
   host: https://api.mangadex.org

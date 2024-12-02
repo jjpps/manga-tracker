@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MangaRepository extends JpaRepository<MangaModel, Long> {
+    MangaModel findByUuid(String uuid);
 }
