@@ -1,9 +1,6 @@
 package com.manga.tracker.client;
 
-import com.manga.tracker.client.response.ChapterAttributes;
-import com.manga.tracker.client.response.MangaAttributes;
-import com.manga.tracker.client.response.MangaDexData;
-import com.manga.tracker.client.response.MangaDexResponse;
+import com.manga.tracker.client.response.*;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +16,8 @@ public interface MangadexClient {
     @GetMapping("/chapter")
     MangaDexResponse<List<MangaDexData<ChapterAttributes>>> getChapters(@RequestParam("manga") final String mangaId, @RequestParam("limit") final int limit,
                                                                         @RequestParam("order[chapter]") final String order, @RequestParam("translatedLanguage[]") final String translatedLanguage);
+    @GetMapping("/cover/{id}")
+    MangaDexResponse<MangaDexData<CoverAttributes>> getCover(@PathVariable("id") final String mangaId);
 
 
 
