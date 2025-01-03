@@ -31,4 +31,6 @@ public class MangaModel {
 
     @Column(nullable = false)
     private Long capLido;
+    @Column()
+    private String cover;
 }

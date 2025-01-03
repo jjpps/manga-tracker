@@ -14,6 +14,9 @@ import org.springframework.web.server.ResponseStatusException;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
+
+import static com.manga.tracker.Constants.PT_BR;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -25,9 +28,9 @@ public class MangadexService {
 
         try{
             MangaDexResponse<MangaDexData<MangaAttributes>> mangaAttributes = this.mangadexClient.getManga(url.split("/")[4]);
-            MangaDexResponse<List<MangaDexData<ChapterAttributes>>> chapterAttributes = this.mangadexClient.getChapters(mangaAttributes.getData().getId(),1, "desc","pt-br");
+            MangaDexResponse<List<MangaDexData<ChapterAttributes>>> chapterAttributes = this.mangadexClient.getChapters(mangaAttributes.getData().getId(),1, "desc",PT_BR);
             if(mangaAttributes.getData().getRelationships().stream().anyMatch(x-> Objects.equals(x.getType(), "cover_art"))){
-                String idCover = mangaAttributes.getData().getRelationships().stream().filter(x-> Objects.equals(x.getType(), "cover_art")).findFirst().get().getId();
+                String idCover = mangaAttributes.getData().getRelationships().stream().filter(x-> Objects.equals(x.getType(), "cover_art")).findFirst().orElseThrow(() -> new IllegalStateException("Nenhum 'cover_art' encontrado!")).getId();
                 MangaDexResponse<MangaDexData<CoverAttributes>> cover = this.mangadexClient.getCover(idCover);
                 coverFormatt = MessageFormat.format("https://mangadex.org/covers/{0}/{1}",mangaAttributes.getData().getId(),cover.getData().getAttributes().getFileName());
             }
@@ -50,9 +53,9 @@ public class MangadexService {
         String coverFormatt = "";
         try{
             MangaDexResponse<MangaDexData<MangaAttributes>> mangaAttributes = this.mangadexClient.getManga(uuid);
-            MangaDexResponse<List<MangaDexData<ChapterAttributes>>> chapterAttributes = this.mangadexClient.getChapters(mangaAttributes.getData().getId(),1, "desc","pt-br");
+            MangaDexResponse<List<MangaDexData<ChapterAttributes>>> chapterAttributes = this.mangadexClient.getChapters(mangaAttributes.getData().getId(),1, "desc",PT_BR);
             if(mangaAttributes.getData().getRelationships().stream().anyMatch(x-> Objects.equals(x.getType(), "cover_art"))){
-                String idCover = mangaAttributes.getData().getRelationships().stream().filter(x-> Objects.equals(x.getType(), "cover_art")).findFirst().get().getId();
+                String idCover = mangaAttributes.getData().getRelationships().stream().filter(x-> Objects.equals(x.getType(), "cover_art")).findFirst().orElseThrow(() -> new IllegalStateException("Nenhum 'cover_art' encontrado!")).getId();
                 MangaDexResponse<MangaDexData<CoverAttributes>> cover = this.mangadexClient.getCover(idCover);
                 coverFormatt = MessageFormat.format("https://mangadex.org/covers/{0}/{1}",uuid,cover.getData().getAttributes().getFileName());
             }
@@ -75,9 +78,9 @@ public class MangadexService {
         String coverFormatt = "";
         MangaDexResponse<MangaDexData<MangaAttributes>> mangaAttributes = this.mangadexClient.getManga(mangaRequest.getId());
 
-        MangaDexResponse<List<MangaDexData<ChapterAttributes>>> chapterAttributes = this.mangadexClient.getChapters(mangaAttributes.getData().getId(),1, "desc","pt-br");
+        MangaDexResponse<List<MangaDexData<ChapterAttributes>>> chapterAttributes = this.mangadexClient.getChapters(mangaAttributes.getData().getId(),1, "desc",PT_BR);
         if(mangaAttributes.getData().getRelationships().stream().anyMatch(x-> Objects.equals(x.getType(), "cover_art"))){
-            String idCover = mangaAttributes.getData().getRelationships().stream().filter(x-> Objects.equals(x.getType(), "cover_art")).findFirst().get().getId();
+            String idCover = mangaAttributes.getData().getRelationships().stream().filter(x-> Objects.equals(x.getType(), "cover_art")).findFirst().orElseThrow(() -> new IllegalStateException("Nenhum 'cover_art' encontrado!")).getId();
             MangaDexResponse<MangaDexData<CoverAttributes>> cover = this.mangadexClient.getCover(idCover);
             coverFormatt = MessageFormat.format("https://mangadex.org/covers/{0}/{1}",mangaAttributes.getData().getId(),cover.getData().getAttributes().getFileName());
         }
@@ -99,6 +102,7 @@ public class MangadexService {
                 .titulo(mangaAttributes.getData().getAttributes().getTitle().get("en"))
                 .uuid(mangaAttributes.getData().getId())
                 .capLido(mangaRequest.getCapLido())
+                .cover(coverFormatt)
                 .nomeUltimoCapitulo(Objects.isNull(chapterAttributes.getData().getFirst().getAttributes().getTitle()) || chapterAttributes.getData().getFirst().getAttributes().getTitle().isEmpty() ? MessageFormat.format("Cap: {0}",chapterAttributes.getData().getFirst().getAttributes().getChapter()):chapterAttributes.getData().getFirst().getAttributes().getTitle())
                 .numeroUltimoCapitulo(chapterAttributes.getData().getFirst().getAttributes().getChapter())
                 .quantidadeCapitulos(Long.parseLong(mangaAttributes.getData().getAttributes().getLastChapter().isEmpty()?chapterAttributes.getData().getFirst().getAttributes().getChapter():mangaAttributes.getData().getAttributes().getLastChapter()))
@@ -113,6 +117,7 @@ public class MangadexService {
                 .titulo(mangaAttributes.getData().getAttributes().getTitle().get("en"))
                 .status(mangaAttributes.getData().getAttributes().getStatus())
                 .uuid(mangaAttributes.getData().getId())
+                .cover(coverFormatt)
                 .build();
     }
     public List<MangaModel> getAllMangas(){return repository.findAll();}
